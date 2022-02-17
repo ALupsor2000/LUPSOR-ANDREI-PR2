@@ -14,12 +14,14 @@ public class Main {
 
     public static void main(String[] args) {
 
+        //create some mitarbeiters
         Mitarbeiter m1 = new Mitarbeiter(1, "Andrei", 1200);
         Mitarbeiter m2 = new Mitarbeiter(2, "Darius", 1500);
         Mitarbeiter m3 = new Mitarbeiter(3, "Marius", 1150);
         Mitarbeiter m4 = new Mitarbeiter(4, "Alex", 2000);
         Mitarbeiter m5 = new Mitarbeiter(5, "Elena", 1850);
 
+        //add mitarbeiter to repository
         repoMitarbeiterList.add(m1);
         repoMitarbeiterList.add(m2);
         repoMitarbeiterList.add(m3);
@@ -38,12 +40,14 @@ public class Main {
         mit2.add(m4);
         mit2.add(m5);
 
+        //create teams and store them into repository
         Team t1 = new Team("Alfa", "SAP", mit1);
         Team t2 = new Team("Beta", "BAE", mit2);
 
         repoTeamList.add(t1);
         repoTeamList.add(t2);
 
+        //creating list of options for user
         String comm = "s";
         while (!comm.equals("0")) {
             System.out.println(
@@ -60,6 +64,7 @@ public class Main {
 
             comm = sc.next();
 
+            //for given option calling the respective function
             switch (comm) {
                 case "1" -> addMitarbeiter();
                 case "2" -> getMitarbeiters();
@@ -74,6 +79,7 @@ public class Main {
         }
     }
 
+    //add new mitarbeiter into repository
     public static void addMitarbeiter(){
         System.out.println("Enter id of new Mitarbeiter");
         int id = sc.nextInt();
@@ -85,6 +91,7 @@ public class Main {
         repoMitarbeiterList.add(new Mitarbeiter(id, name, lohn));
     }
 
+    //showing all mitarbeiter fronm repository
     public static void getMitarbeiters(){
         if(repoMitarbeiterList.isEmpty()){
             System.out.println("No existing Mitarbeiter");
@@ -96,6 +103,7 @@ public class Main {
         }
     }
 
+    //updating mitarbeiter for given id
     public static void updateMitarbeiter(){
         System.out.println("Enter id of Mitarbeiter you want to update:");
         int id = sc.nextInt();
@@ -111,12 +119,14 @@ public class Main {
         }
     }
 
+    //deleteing mitarbeiter for given id
     public static void deleteMitarbeiter(){
         System.out.println("Enter id of Mitarbeiter you want to delete:");
         int id = sc.nextInt();
         repoMitarbeiterList =repoMitarbeiterList.stream().filter((m) -> !Objects.equals(m.getId(), id)).collect(Collectors.toList());
     }
 
+    //creating new team with list of mitarbeiter
     public static void addTeam(){
         System.out.println("Enter name of new Team:");
         String name = sc.next();
@@ -139,6 +149,7 @@ public class Main {
         repoTeamList.add(new Team(name, project, temp_mitarbeiter));
     }
 
+    //showing list of teams from repository
     public static void getTeams(){
         if(repoTeamList.isEmpty()){
             System.out.println("No existing teams");
@@ -153,6 +164,7 @@ public class Main {
         }
     }
 
+    //uopdating a team after it's name
     public static void updateTeam(){
         System.out.println("Enter name of team you want to update:");
         String name = sc.next();
@@ -180,12 +192,14 @@ public class Main {
         }
     }
 
+    //deleting team after name
     public static void deleteTeam(){
         System.out.println("Enter name of team you want to delete:");
         String name = sc.next();
         repoTeamList =repoTeamList.stream().filter((t) -> !Objects.equals(t.getName(), name)).collect(Collectors.toList());
     }
 
+    //showing teams that only contains the given name
     public static void filterTeam(){
         System.out.println("Enter name of Mitarbeiter you want to filter team after:");
         String name = sc.next();
