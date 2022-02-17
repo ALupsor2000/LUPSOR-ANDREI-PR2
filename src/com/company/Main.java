@@ -2,7 +2,9 @@ package com.company;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -11,6 +13,36 @@ public class Main {
     static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
+
+        Mitarbeiter m1 = new Mitarbeiter(1, "Andrei", 1200);
+        Mitarbeiter m2 = new Mitarbeiter(2, "Darius", 1500);
+        Mitarbeiter m3 = new Mitarbeiter(3, "Marius", 1150);
+        Mitarbeiter m4 = new Mitarbeiter(4, "Alex", 2000);
+        Mitarbeiter m5 = new Mitarbeiter(5, "Elena", 1850);
+
+        repoMitarbeiterList.add(m1);
+        repoMitarbeiterList.add(m2);
+        repoMitarbeiterList.add(m3);
+        repoMitarbeiterList.add(m4);
+        repoMitarbeiterList.add(m5);
+
+        List<Mitarbeiter> mit1 = new ArrayList<>();
+        List<Mitarbeiter> mit2 = new ArrayList<>();
+
+        mit1.add(m1);
+        mit1.add(m2);
+        mit1.add(m4);
+        mit1.add(m5);
+
+        mit2.add(m2);
+        mit2.add(m4);
+        mit2.add(m5);
+
+        Team t1 = new Team("Alfa", "SAP", mit1);
+        Team t2 = new Team("Beta", "BAE", mit2);
+
+        repoTeamList.add(t1);
+        repoTeamList.add(t2);
 
         String comm = "s";
         while (!comm.equals("0")) {
@@ -47,7 +79,7 @@ public class Main {
         int id = sc.nextInt();
         System.out.println("Enter name of new Mitarbeiter:");
         String name = sc.next();
-        System.out.println("Enter lohn of new Mitarbeiter");
+        System.out.println("Enter lohn of new Mitarbeiter:");
         int lohn = sc.nextInt();
 
         repoMitarbeiterList.add(new Mitarbeiter(id, name, lohn));
@@ -71,5 +103,107 @@ public class Main {
         String name = sc.next();
         System.out.println("Enter new lohn of Mitarbeiter:");
         int lohn = sc.nextInt();
+        for(Mitarbeiter m : repoMitarbeiterList){
+            if(m.getId() == id){
+                m.setName(name);
+                m.setLohn(lohn);
+            }
+        }
+    }
+
+    public static void deleteMitarbeiter(){
+        System.out.println("Enter id of Mitarbeiter you want to delete:");
+        int id = sc.nextInt();
+        repoMitarbeiterList =repoMitarbeiterList.stream().filter((m) -> !Objects.equals(m.getId(), id)).collect(Collectors.toList());
+    }
+
+    public static void addTeam(){
+        System.out.println("Enter name of new Team:");
+        String name = sc.next();
+        System.out.println("Enter name of team project:");
+        String project = sc.next();
+        System.out.println("Enter id of Mitarbeiters separated with comma only(existing id):");
+        String id_comma = sc.next();
+        String[] id_list = id_comma.split(",");
+
+        List<Mitarbeiter> temp_mitarbeiter = new ArrayList<>();
+
+        for(String str : id_list){
+            for(Mitarbeiter m : repoMitarbeiterList){
+                if(m.getId() == Integer.parseInt(str)){
+                    temp_mitarbeiter.add(m);
+                }
+            }
+        }
+
+        repoTeamList.add(new Team(name, project, temp_mitarbeiter));
+    }
+
+    public static void getTeams(){
+        if(repoTeamList.isEmpty()){
+            System.out.println("No existing teams");
+        }
+        else{
+            for(Team t : repoTeamList){
+                System.out.println("Team " + t.getName() + " with project " + t.getProjektName() + " has Mitarbeiters: ");
+                for(Mitarbeiter m : t.getMitarbeiterList()){
+                    System.out.println("   " + m.toString());
+                }
+            }
+        }
+    }
+
+    public static void updateTeam(){
+        System.out.println("Enter name of team you want to update:");
+        String name = sc.next();
+        System.out.println("Enter new project name:");
+        String project =sc.next();
+        System.out.println("Enter id of Mitarbeiters separated with comma only(existing id):");
+        String id_comma = sc.next();
+        String[] id_list = id_comma.split(",");
+
+        List<Mitarbeiter> temp_mitarbeiter = new ArrayList<>();
+
+        for(String str : id_list){
+            for(Mitarbeiter m : repoMitarbeiterList){
+                if(m.getId() == Integer.parseInt(str)){
+                    temp_mitarbeiter.add(m);
+                }
+            }
+        }
+
+        for(Team t : repoTeamList){
+            if(t.getName().equals(name)){
+                t.setProjektName(project);
+                t.setMitarbeiterList(temp_mitarbeiter);
+            }
+        }
+    }
+
+    public static void deleteTeam(){
+        System.out.println("Enter name of team you want to delete:");
+        String name = sc.next();
+        repoTeamList =repoTeamList.stream().filter((t) -> !Objects.equals(t.getName(), name)).collect(Collectors.toList());
+    }
+
+    public static void filterTeam(){
+        System.out.println("Enter name of Mitarbeiter you want to filter team after:");
+        String name = sc.next();
+        List<Team> filterTeam = new ArrayList<>();
+        for(Team t : repoTeamList){
+            for(Mitarbeiter m : t.getMitarbeiterList()) {
+                if (Objects.equals(m.getName(), name)) {
+                    if(!filterTeam.contains(t)){
+                        filterTeam.add(t);
+                    }
+                }
+            }
+        }
+        for(Team t : filterTeam){
+            System.out.println("Team " + t.getName() + " with project " + t.getProjektName() + " has Mitarbeiters: ");
+            for(Mitarbeiter m : t.getMitarbeiterList()){
+                System.out.println("   " + m.toString());
+            }
+        }
     }
 }

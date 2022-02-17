@@ -38,9 +38,9 @@ public class Mitarbeiter {
 
     @Override
     public String toString() {
-        return "Mitarbeiter{" +
-                "name='" + name + '\'' +
-                ", lohn=" + lohn +
-                '}';
+        return "Mitarbeiter " +
+                "id='" + id + '\''+
+                ", name='" + name + '\'' +
+                ", lohn=" + lohn;
     }
 }
